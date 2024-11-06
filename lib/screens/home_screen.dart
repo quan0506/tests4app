@@ -11,8 +11,16 @@ import 'package:tests4app/screens/setting_screen.dart';
 import 'package:tests4app/screens/staff_screen.dart';
 import 'package:tests4app/screens/voucher_screen.dart';
 import '../widgets/navigation_drawer.dart';
+import '../widgets/bottom_navbar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   final List<IconData> icons = [
     Icons.loyalty,
     Icons.meeting_room,
@@ -53,6 +61,38 @@ class HomeScreen extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        if (_tabController.index == 0) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AnalyticsScreen()),
+          );
+        } else if (_tabController.index == 1) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => BranchScreen()),
+          );
+        } else if (_tabController.index == 2) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SettingScreen()),
+          );
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -63,6 +103,23 @@ class HomeScreen extends StatelessWidget {
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
+        ),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              icon: Icon(Icons.signal_cellular_alt, color: Colors.white),
+              child: Text('Thống kê', style: TextStyle(color: Colors.white)),
+            ),
+            Tab(
+              icon: Icon(Icons.loyalty, color: Colors.white),
+              child: Text('Chi nhánh', style: TextStyle(color: Colors.white)),
+            ),
+            Tab(
+              icon: Icon(Icons.settings, color: Colors.white),
+              child: Text('Cài đặt', style: TextStyle(color: Colors.white)),
+            ),
+          ],
         ),
         backgroundColor: Colors.blue,
         actions: [
@@ -91,7 +148,6 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       drawer: AppNavigationDrawer(),
-      // bottomNavigationBar: ,
       body: GridView.count(
         crossAxisCount: 2,
         padding: EdgeInsets.all(0.0),
@@ -134,6 +190,7 @@ class HomeScreen extends StatelessWidget {
           );
         }),
       ),
+      // bottomNavigationBar: BottomNavBar(), // Thêm thanh BottomNavBar
     );
   }
 }

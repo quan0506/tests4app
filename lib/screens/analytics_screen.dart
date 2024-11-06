@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart'; // Gói thư viện hỗ trợ vẽ biểu đồ
+import 'package:fl_chart/fl_chart.dart';
 import '../widgets/navigation_drawer.dart';
-import '../widgets/navigation_bar.dart';
+// import '../widgets/navigation_bar.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   @override

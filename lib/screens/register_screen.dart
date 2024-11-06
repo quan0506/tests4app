@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/navigation_drawer.dart';
-import '../widgets/navigation_bar.dart';
+// import '../widgets/navigation_bar.dart';
 
 class RegisterScreen extends StatelessWidget {
 

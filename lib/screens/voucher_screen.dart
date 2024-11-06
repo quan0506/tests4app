@@ -1,6 +1,7 @@
+// voucher_screen.dart
 import 'package:flutter/material.dart';
 import '../widgets/navigation_drawer.dart';
-import '../widgets/navigation_bar.dart';
+import '../widgets/bottom_navbar.dart';
 
 class VoucherScreen extends StatelessWidget {
   @override
@@ -18,13 +19,13 @@ class VoucherScreen extends StatelessWidget {
         backgroundColor: Colors.blue,
       ),
       drawer: AppNavigationDrawer(),
-      // bottomNavigationBar: NavigationBarApp(),
       body: Center(
         child: Text(
-          'Quan ly voucher',
+          'Quản lý voucher',
           style: TextStyle(fontSize: 24),
         ),
       ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

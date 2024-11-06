@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tests4app/screens/room_screen.dart';
 import '../widgets/navigation_drawer.dart';
-import '../widgets/navigation_bar.dart';
+// import '../widgets/navigation_bar.dart';
 
 class ServiceScreen extends StatelessWidget {
   @override

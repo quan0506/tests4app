@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/navigation_drawer.dart';
-import '../widgets/navigation_bar.dart';
+// import '../widgets/navigation_bar.dart';
 import '../screens/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {

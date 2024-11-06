@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tests4app/screens/room_screen.dart';
 import '../widgets/navigation_drawer.dart';
-import '../widgets/navigation_bar.dart';
+// import '../widgets/navigation_bar.dart';
 
 void _showEditForm(BuildContext context) {
   TextEditingController nameController = TextEditingController();
@@ -33,14 +33,13 @@ void _showEditForm(BuildContext context) {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Thoát mà không lưu
+              Navigator.of(context).pop();
             },
             child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
-              // Thực hiện lưu dữ liệu chỉnh sửa ở đây
-              Navigator.of(context).pop(); // Đóng form sau khi lưu
+              Navigator.of(context).pop();
             },
             child: Text('Save'),
           ),
@@ -60,14 +59,14 @@ void _showDeleteConfirmation(BuildContext context) {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Đóng hộp thoại mà không xóa
+              Navigator.of(context).pop();
             },
             child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
               // Thực hiện xóa chi nhánh ở đây
-              Navigator.of(context).pop(); // Đóng hộp thoại sau khi xóa
+              Navigator.of(context).pop();
             },
             child: Text('OK'),
           ),
