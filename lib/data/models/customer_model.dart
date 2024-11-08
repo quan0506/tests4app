@@ -1,10 +1,10 @@
 class Customer {
-  final int id;
+  final int? id;
   final String fullName;
   final String email;
   final String address;
   final String phoneNumber;
-  final String createdAt;
+  // final String? createdAt;
 
   Customer({
     required this.id,
@@ -12,7 +12,7 @@ class Customer {
     required this.email,
     required this.address,
     required this.phoneNumber,
-    required this.createdAt,
+    // required this.createdAt,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
@@ -22,21 +22,23 @@ class Customer {
       email: json['email'],
       address: json['address'],
       phoneNumber: json['phoneNumber'],
-      createdAt: json['createdAt'],
+      // createdAt: json['createdAt'],
     );
   }
 
   get name => null;
 
-  // Hàm để chuyển từ Customer object thành JSON
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'fullName': fullName,
-      'email': email,
-      'address': address,
-      'phoneNumber': phoneNumber,
-      'createdAt': createdAt,
+      if (id != null && id! > 0) 'id': id,
+      'fullName': fullName.trim(),
+      'email': email.trim(),
+      'address': address.trim(),
+      'phoneNumber': phoneNumber.trim(),
+      // if (createdAt != null) 'createdAt': createdAt,
     };
   }
+
+
 }
+

@@ -16,35 +16,17 @@ class CustomerRepository {
     }
   }
 
-  // Future<Customer> addCustomer(Customer customer) async {
-  //   final response = await http.post(
-  //     Uri.parse(baseUrl),
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: json.encode(customer.toJson()),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     return Customer.fromJson(json.decode(response.body));
-  //   } else {
-  //     throw Exception('Failed to add customer');
-  //   }
-  // }
-
-  Future<void> addCustomer(Customer customer) async {
+  Future<Customer> addCustomer(Customer customer) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/customers'),
+      Uri.parse(baseUrl),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'name': customer.name,
-        'email': customer.email,
-        'address': customer.address,
-        'phoneNumber': customer.phoneNumber,
-        'createdAt': customer.createdAt,
-      }),
+      body: json.encode(customer.toJson()),
     );
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to add customer');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return Customer.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to add customer: ${response.body}');
     }
   }
 
@@ -82,3 +64,4 @@ class CustomerRepository {
     }
   }
 }
+

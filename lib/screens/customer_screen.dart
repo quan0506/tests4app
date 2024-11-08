@@ -26,6 +26,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
       });
     } catch (error) {
       print('Error fetching customers: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi tải danh sách khách hàng')),
+      );
     }
   }
 
@@ -38,6 +41,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
       );
     } catch (error) {
       print('Error deleting customer: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi khi xoá khách hàng')),
+      );
     }
   }
 
@@ -78,6 +84,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                 TextField(
                   controller: _phoneController,
                   decoration: InputDecoration(labelText: 'Số điện thoại'),
+                  keyboardType: TextInputType.phone,
                 ),
               ],
             ),
@@ -91,31 +98,63 @@ class _CustomerScreenState extends State<CustomerScreen> {
             ),
             TextButton(
               onPressed: () async {
-                final newCustomer = Customer(
-                  id: customer?.id ?? 0,
-                  fullName: _fullNameController.text,
-                  email: _emailController.text,
-                  address: _addressController.text,
-                  phoneNumber: _phoneController.text,
-                  createdAt: DateTime.now().toString(),
-                );
-
-                if (customer == null) {
-                  // Thêm khách hàng mới
-                  await customerRepository.addCustomer(newCustomer);
+                // Validate dữ liệu
+                if (_fullNameController.text.isEmpty ||
+                    _emailController.text.isEmpty ||
+                    _addressController.text.isEmpty ||
+                    _phoneController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Khách hàng đã được thêm')),
+                    SnackBar(content: Text('Vui lòng điền đầy đủ thông tin.')),
                   );
-                } else {
-                  // Cập nhật thông tin khách hàng
-                  await customerRepository.updateCustomer(customer.id, newCustomer);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Khách hàng đã được cập nhật')),
-                  );
+                  return;
                 }
 
-                Navigator.of(context).pop();
-                _fetchCustomers(); // Refresh list
+                final newCustomer = Customer(
+                  id: customer?.id ?? 0,
+                  fullName: _fullNameController.text.trim(),
+                  email: _emailController.text.trim(),
+                  address: _addressController.text.trim(),
+                  phoneNumber: _phoneController.text.trim(),
+                  // createdAt: customer?.createdAt ?? DateTime.now().toString(),
+                );
+
+
+                try {
+                  if (customer == null) {
+                    final addedCustomer = await customerRepository.addCustomer(newCustomer);
+                    setState(() {
+                      customers.add(addedCustomer);
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Khách hàng đã được thêm thành công!')),
+                    );
+                  } else {
+                    if (customer.id != null) {
+                      final updatedCustomer = await customerRepository.updateCustomer(customer.id!, newCustomer);
+                      setState(() {
+                        final index = customers.indexWhere((c) => c.id == customer.id);
+                        if (index != -1) {
+                          customers[index] = updatedCustomer;
+                        }
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Khách hàng đã được cập nhật thành công!')),
+                      );
+                    } else {
+                      print('Cannot update customer: ID is null');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Không thể cập nhật khách hàng: ID không hợp lệ')),
+                      );
+                    }
+                  }
+                  Navigator.of(context).pop();
+                  _fetchCustomers();
+                } catch (error) {
+                  print('Error saving customer: $error');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Lỗi khi lưu khách hàng: $error')),
+                  );
+                }
               },
               child: Text('Lưu'),
             ),
@@ -133,6 +172,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
       });
     } catch (error) {
       print('Error searching customers: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi tìm kiếm khách hàng')),
+      );
     }
   }
 
@@ -174,7 +216,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         Text('Email: ${customer.email}'),
                         Text('Địa chỉ: ${customer.address}'),
                         Text('Số điện thoại: ${customer.phoneNumber}'),
-                        Text('Ngày tạo: ${customer.createdAt}'),
+                        // Text('Ngày tạo: ${customer.createdAt}'),
                       ],
                     ),
                     trailing: Row(
@@ -186,7 +228,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                         ),
                         IconButton(
                           icon: Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => _deleteCustomer(customer.id),
+                          onPressed: () => _deleteCustomer(customer.id!),
                         ),
                       ],
                     ),
