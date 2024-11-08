@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/customer_model.dart';
 
 class CustomerRepository {
-  final String baseUrl = 'http://192.168.0.2:1234/api/customers';
+  final String baseUrl = 'http://10.0.2.2:1234/api/customers';
 
   Future<List<Customer>> fetchCustomers() async {
     final response = await http.get(Uri.parse(baseUrl));

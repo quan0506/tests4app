@@ -15,7 +15,6 @@ class Customer {
     required this.createdAt,
   });
 
-  // Hàm factory để chuyển từ JSON thành Customer object
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
       id: json['id'],
